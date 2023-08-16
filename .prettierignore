@@ -1,0 +1,7 @@
+**/*.prettierignore
+**/*.gitignore
+
+# Ignore image files
+**/*.png
+**/*.jpg
+**/*.jpeg

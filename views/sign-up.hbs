@@ -1,0 +1,118 @@
+<section class='section'>
+  <div class='container is-max-desktop'>
+    <div class='columns is-centered'>
+      <div class='column is-two-thirds'>
+        <h3 class='title is-4 is-spaced bd-anchor-title'>Registering as a
+          Poochie Pal</h3>
+        <div class='content'>
+          <p>Embrace the joy of sharing and experiencing the unconditional love
+            of dogs. Whether you're a dog owner or a dog lover, Poochie Pals is
+            the community where connections are made, memories are created, and
+            lives are enriched.
+          </p>
+          <p>
+            Don't wait! Sign up today and become a part of the Poochie Pals
+            family!
+          </p>
+        </div>
+
+        <form action='/sign-up' method='post'>
+          <div class='field'>
+            <label class='label'>Your Name</label>
+            <div class='control'>
+              <input
+                required
+                name='full_name'
+                class='input'
+                type='text'
+                placeholder='eg.: Tilda Swinton'
+              />
+            </div>
+          </div>
+          <div class='field'>
+            <label class='label'>What will be your Poochie Pals' Username?</label>
+            <div class='control'>
+              <input
+                required
+                name='username'
+                class='input'
+                type='text'
+                placeholder='eg.: SnowWhite76'
+              />
+            </div>
+          </div>
+
+          <div class='field'>
+            <label class='label'>Email</label>
+            <div class='control'>
+              <input
+                required
+                name='email'
+                class='input'
+                type='email'
+                placeholder='eg.: dog-lover@poochiepals.com'
+              />
+            </div>
+          </div>
+
+          <div class='field'>
+            <label class='label'>Password</label>
+            <div class='control'>
+              <input required name='password' class='input' />
+            </div>
+          </div>
+
+          <div class='field'>
+            <label class='label'>Poochie Status</label>
+            <div class='control'>
+              <div class='select'>
+                <select name='user_type'>
+                  <option value='owner'>I have a dog!</option>
+                  <option value='sitter'>I need a dog!</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class='field'>
+            <label class='label'>Your Dog's Name</label>
+            <div class='control'>
+              <input
+                name='pet_name'
+                class='input'
+                type='text'
+                placeholder='eg.: Charlie Barker'
+              />
+            </div>
+          </div>
+          <div class='field'>
+            <label class='label'>Message</label>
+            <div class='control'>
+              <textarea
+                name='message'
+                class='textarea'
+                placeholder='Textarea'
+              ></textarea>
+            </div>
+          </div>
+          <div class='field'>
+            <div class='control'>
+              <label class='checkbox'>
+                <input required type='checkbox' name='toc_agreed' />
+                I agree to the
+                <a href='#'>terms and conditions</a>
+              </label>
+            </div>
+          </div>
+          <div class='field is-grouped'>
+            <div class='control'>
+              <button class='button is-primary'>Submit</button>
+            </div>
+            <div class='control'>
+              <button class='button is-link is-light'>Cancel</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

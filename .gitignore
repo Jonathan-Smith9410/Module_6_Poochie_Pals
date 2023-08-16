@@ -1,0 +1,15 @@
+# Files
+
+.DS_Store
+.ruby-version
+npm-debug.log
+db/poochie-pals.db
+
+# Folders
+
+.idea/
+.jekyll-cache/
+.sass-cache
+_gh_pages
+_site
+node_modules

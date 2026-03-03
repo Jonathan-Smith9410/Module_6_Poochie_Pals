@@ -25,7 +25,9 @@ Apparently allows all websites access to the API - should be whitelisted domains
 //   next(createError(404));
 // });
 
-Unsure if this is a vulnerability? WIll mean that default error handler is used?
+Unsure if this is a vulnerability? Will mean that default error handler is used?
+
+**Unlikely to be a problem**
 
 
 4. ./config/credentials
@@ -42,6 +44,8 @@ All user details stored in plaintext
 
 Is debug active on the server?
 
+**Look like this is fine, it's more secure than printing to the terminal, does nothing unless explicitly switched on in a debugging sesion**
+
 
 7. ./lib/logger.js line 4
 
@@ -53,7 +57,8 @@ Gives a lot of information away in file name
 If userID is primary key, can be bruteforced by guessing or adding incremental numbers to URL?
 Should userID be obfuscated?
 
-**TEST BY GOING TO URL AND ADDING/<NUMBER>**
+**YES - IDOR vulnerability, is fetching based ONLY on the ID given in the URL. http://poochie-pals-web-lb-1487923387.eu-west-2.elb.amazonaws.com/account/2940 is for Fred Smith. Manually changing the line to: http://poochie-pals-web-lb-1487923387.eu-west-2.elb.amazonaws.com/account/2939 gives a different account (Made by ZAP?)**
+
 
 
 9. ./routes/index.js
@@ -64,6 +69,9 @@ Should userID be obfuscated?
 10. ./routes/sign-in.js line 15
 
 Not sanitised or escaped, vulnerable to SQL injection attacks?
+
+**YES - vulnerable to SQL Injection as it's using string interpolation in the query**
+
 All user details stored in plaintext
 
 In logger, is too much information stored? (Lines 25 to 37)
@@ -75,13 +83,15 @@ Where is that stored and who has permissions?
 
 Data including password sent as plaintext over unencrypted protocol (HTTP, not HTTPS)
 
-Input not sanitised, vulnerable to script injection
+Input not sanitised, vulnerable to script injection?
+
+**No - sequelize uses parameterized queries by default** 
 
 Line 27 - too much information stored in logger - don't need full name, just username
 
 Could misleading information be added to logs?
 
-**Look into logs issue**
+**YES - if username has \n characters in it it can bu used to forge log entries**
 
 
 12. ./routes/sign-up lines 58-61

@@ -182,3 +182,48 @@ To ignore this finding, run: bearer ignore add 7d8405c1f26710b385d20939862c2f13_
 File: bin/seed-db.js:7
 
  7     console.error(err.message);
+
+ 
+ ZAP RESULTS
+
+ Alert Counts by Alert Type
+This table shows the number of alerts of each alert type, together with the alert type's risk level.
+
+(The percentages in brackets represent each count as a percentage, rounded to one decimal place, of the total number of alerts included in this report.)
+
+Alert type	                                                                    Risk	        Count
+Absence of Anti-CSRF Tokens	                                                    Medium	      2
+(11.8%)
+CSP: Failure to Define Directive with No Fallback	                              Medium	      3
+(17.6%)
+Content Security Policy (CSP) Header Not Set	                                  Medium	      4
+(23.5%)
+Cross-Domain Misconfiguration	                                                  Medium	      5
+(29.4%)
+HTTP Only Site	                                                                Medium	      1
+(5.9%)
+Missing Anti-clickjacking Header	                                              Medium	      4
+(23.5%)
+Cookie without SameSite Attribute	                                              Low	          3
+(17.6%)
+Server Leaks Information via "X-Powered-By" HTTP Response Header Field(s)	      Low	          5
+(29.4%)
+Server Leaks Version Information via "Server" HTTP Response Header Field	      Low	          5
+(29.4%)
+Strict-Transport-Security Header Not Set	                                      Low	          4
+(23.5%)
+Timestamp Disclosure - Unix	                                                    Low	          4
+(23.5%)
+X-Content-Type-Options Header Missing	                                          Low	          9
+(52.9%)
+Authentication Request Identified	                                              Informational	1
+(5.9%)
+Modern Web Application	                                                        Informational	4
+(23.5%)
+Re-examine Cache-control Directives	                                            Informational	4
+(23.5%)
+Retrieved from Cache	                                                          Informational	4
+(23.5%)
+Session Management Response Identified	                                        Informational	4
+(23.5%)
+Total		17

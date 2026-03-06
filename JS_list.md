@@ -6,7 +6,7 @@ app.use(session({
   secret: 'SECRET',
 }));
 
-Hardcoded secret.
+Hardcoded secret. Needs removal, use managed secrets or environment variables.
 
 
 2. ./app.js lines 19-20:
@@ -19,17 +19,17 @@ Apparently allows all websites access to the API - should be whitelisted domains
 
 3. ./config/credentials
 
-AWS Access key and Secret key stored in plaintext and uploaded to GitHub.
+AWS Access key and Secret key stored in plaintext and uploaded to GitHub. Needs removal, use managed secrets or environment variables.
 
 
 4. ./bin/seed-db.js lines 15-20
 
-All user details stored in plaintext.
+All user details stored in plaintext. Databse requires encryption.
 
 
 5. ./lib/logger.js line 4
 
-Gives a lot of information away in file name.
+Gives a lot of information away in file name. Requires change of filename.
 
 
 6. ./routes/account.js line 5
@@ -39,32 +39,46 @@ IDOR vulnerability, is fetching based ONLY on the ID given in the URL. http://po
 
 7. ./routes/index.js line 9
 
-Potentiak information leakage via current_user as database object contains sensitive data. Shouold only pass specific info needed.
+Potential information leakage via current_user as database object contains sensitive data. Should only pass specific info needed.
 
 
 8. ./routes/sign-in.js line 15
 
-Data including password sent as plaintext over unencrypted protocol (HTTP, not HTTPS).
+Data including password sent as plaintext over unencrypted protocol (HTTP, not HTTPS). Requires enabling of HTTPS.
 
-Vulnerable to SQL Injection as it's using string interpolation in the query.
+Vulnerable to SQL Injection as it's using string interpolation in the query. For example, can login as admin using the following string:
 
-All user details stored in plaintext.
+admin@example.com' OR '1'='1' --
+
+This will always evaluate to true and will log you in as the first entry in the SQL table, usually admin. Database entries should be sanitised using parameterisation.
+
+All user details stored in plaintext. Requires encryption, see point 4 above.
 
 
 9. ./routes/sign-up.js lines 13 - 18
 
-Data including password sent as plaintext over unencrypted protocol (HTTP, not HTTPS).
+Data including password sent as plaintext over unencrypted protocol (HTTP, not HTTPS), see point 8.
 
-Vulnerable to SQL Injection as it's using string interpolation in the query.
+Vulnerable to SQL Injection as it's using string interpolation in the query, see point 8.
 
-Line 27 - too much information stored in logger - don't need full name, just username.
+Line 27 - too much information stored in logger - don't need full name, just username. Only relevant data should be added to logs.
 
-Misleading information can be added to logs - if username has \n characters in it it can be used to forge log entries.
+Vulnerable to Log Forging - misleading information can be added to logs; if username has \n characters in it it can be used to forge log entries. Requires sanitising by adding to the catch block.
 
 
 10. ./routes/sign-up lines 58-61
 
-Password field not protected, should have row of asterisks. Field input should be type=password.
+Password field not protected, should have row of asterisks. Field input should be set to type=password.
+
+
+11. S3 Bucket is public
+
+Fix by setting to private.
+
+
+12. AWS Security group is open
+
+Fix by restricing access and traffic in security group table using rules of least privelege.
 
 
 BEARER SCAN:
@@ -79,7 +93,7 @@ File: app.js:27
  28   secret: 'SECRET',
  29 }));
 
-As above. Major security risk if codebase becomes exposed. Should use env variables or secret management.
+As above. Major security risk if codebase becomes exposed. Should use environment variables or secret management.
 
 
 CRITICAL: Missing secure HTTP server configuration [CWE-319]
@@ -90,7 +104,7 @@ File: bin/www:22
 
  22 var server = http.createServer(app);
 
-Not using HTTPS, therefore data is unencrypted in transit and can be intercepted.
+Not using HTTPS, therefore data is unencrypted in transit and can be intercepted. Require HTTPS enabling.
 
 
 CRITICAL: Usage of hard-coded secret [CWE-798]
@@ -130,7 +144,7 @@ File: app.js:27
  28   secret: 'SECRET',
  29 }));
 
-Session cookie is set with its default values, making it predictable. Can then be exploited.
+Session cookie is set with its default values, making it predictable. Can then be exploited. Session cookies should be given generic non-descriptive names.
 
 
 MEDIUM: Missing Helmet configuration on HTTP headers [CWE-693]
@@ -141,7 +155,7 @@ File: app.js:17
 
  17 var app = express();
 
-Warning suggest using Helmet middleware to automatically set HTTP headers and avoid vulnerabilities such as clickjacking.
+Warning suggests using Helmet middleware to automatically set HTTP headers and avoid vulnerabilities such as clickjacking.
 
 
 MEDIUM: Missing server configuration to reduce server fingerprinting [CWE-693]
@@ -163,7 +177,7 @@ File: app.js:34
 
  34 app.use(express.static(path.join(__dirname, 'public')));
 
-As this has been executed after the app.use(session(...)) line, a session cookie is attached to the response for a static image. This can be cached by a CDN, which can then inadvertently serve it to another user, effectively logging the second user in as the frst.
+As this has been executed after the app.use(session(...)) line, a session cookie is attached to the response for a static image. This can be cached by a CDN, which can then inadvertently serve it to another user, effectively logging the second user in as the frst. In the example given, a session cookie is attached to two of the static images in the site, the values of which can then be used by an attacker to pick up someone else's session, Efffectively logging in as them. Fix by executing this before the app.use(session(...)) line.
 
 
 LOW: Leakage of information in logger message [CWE-532]
@@ -174,7 +188,7 @@ File: bin/seed-db.js:7
 
  7     console.error(err.message);
 
-Database information is being logged - sensitivie info shouldn't be inlcuded in logger messages. 
+Database information is being logged - sensitivie info shouldn't be inlcuded in logger messages. See whitebox testing point 9 above.
 
 
 ZAP SCAN

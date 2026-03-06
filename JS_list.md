@@ -24,7 +24,7 @@ AWS Access key and Secret key stored in plaintext and uploaded to GitHub. Needs 
 
 4. ./bin/seed-db.js lines 15-20
 
-All user details stored in plaintext. Databse requires encryption.
+All user details stored in plaintext. Database requires encryption.
 
 
 5. ./lib/logger.js line 4
@@ -78,7 +78,7 @@ Fix by setting to private.
 
 12. AWS Security group is open
 
-Fix by restricing access and traffic in security group table using rules of least privelege.
+Fix by restricting access and traffic in security group table using rules of least privilege.
 
 
 BEARER SCAN:
@@ -188,7 +188,7 @@ File: bin/seed-db.js:7
 
  7     console.error(err.message);
 
-Database information is being logged - sensitivie info shouldn't be inlcuded in logger messages. See whitebox testing point 9 above.
+Database information is being logged - sensitive info shouldn't be included in logger messages. See whitebox testing point 9 above.
 
 
 ZAP SCAN
